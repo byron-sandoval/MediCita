@@ -1,0 +1,126 @@
+// ==========================================
+// ENUMS (Reglas de Negocio)
+// ==========================================
+enum Especialidad {
+    CARDIOLOGIA, DERMATOLOGIA, PEDIATRIA, MEDICINA_GENERAL,
+    NEUROLOGIA, PSIQUIATRIA, ODONTOLOGIA
+}
+
+enum EstadoCita {
+    PENDIENTE, CONFIRMADA, CANCELADA, COMPLETADA, AUSENTE
+}
+
+enum Genero {
+    MASCULINO, FEMENINO, OTRO
+}
+
+enum DiaSemana {
+    LUNES, MARTES, MIERCOLES, JUEVES, VIERNES, SABADO, DOMINGO
+}
+
+enum EstadoPago {
+    PENDIENTE, COMPLETADO, RECHAZADO
+}
+
+enum MetodoPago {
+    TARJETA, EFECTIVO, TRANSFERENCIA
+}
+
+// ==========================================
+// ENTIDADES
+// ==========================================
+
+entity Medico {
+    numeroLicencia String required unique
+    especialidad Especialidad required
+    tarifaConsulta BigDecimal required min(0)
+    keycloakId String required unique
+    activo Boolean required
+}
+
+entity Paciente {
+    telefono String required
+    fechaNacimiento LocalDate required
+    genero Genero
+    keycloakId String required unique
+    activo Boolean required
+}
+
+entity Cita {
+    fechaHora Instant required
+    motivo String required maxlength(500)
+    estado EstadoCita required
+    enlaceTelemedicina String
+    costo BigDecimal
+    activo Boolean required
+}
+
+entity Pago {
+    fechaPago Instant required
+    monto BigDecimal required
+    metodo MetodoPago required
+    estado EstadoPago required
+    transaccionId String
+    activo Boolean required
+}
+
+entity Disponibilidad {
+    dia DiaSemana required
+    horaInicio LocalTime required
+    horaFin LocalTime required
+    esDescanso Boolean
+}
+
+entity HistoriaClinica {
+    fechaCreacion Instant required
+    diagnostico String required maxlength(5000)
+    tratamiento String maxlength(5000)
+    activo Boolean required
+}
+
+/** Entidad para subir imágenes (perfil, recetas, estudios) */
+entity Adjunto {
+    nombre String required
+    contenido ImageBlob required
+    tipoContenido String
+    fechaSubida Instant
+}
+
+entity ContenidoWeb {
+    clave String required unique 
+    valorTexto String
+    imagen ImageBlob
+    activo Boolean required
+}
+
+// ==========================================
+// RELACIONES
+// ==========================================
+
+relationship OneToOne {
+    HistoriaClinica{paciente} to Paciente
+}
+
+relationship ManyToOne {
+    Cita{medico} to Medico
+    Cita{paciente} to Paciente
+    Pago{cita} to Cita
+
+    Disponibilidad{medico} to Medico
+
+    // Relaciones para adjuntar archivos a la parte médica
+    Adjunto{cita} to Cita
+    Adjunto{historiaClinica} to HistoriaClinica
+
+    // Relación para fotos de perfil
+    Medico{foto} to Adjunto
+    Paciente{foto} to Adjunto
+}
+
+// ==========================================
+// CONFIGURACIÓN TÉCNICA
+// ==========================================
+
+paginate * with pagination
+dto * with mapstruct
+service * with serviceImpl

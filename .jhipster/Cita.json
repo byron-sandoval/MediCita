@@ -1,0 +1,60 @@
+{
+  "annotations": {
+    "changelogDate": "20260115163835"
+  },
+  "applications": "*",
+  "clientRootFolder": "MediCita",
+  "databaseType": "sql",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "fechaHora",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "motivo",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "maxlength"],
+      "fieldValidateRulesMaxlength": "500"
+    },
+    {
+      "fieldName": "estado",
+      "fieldType": "EstadoCita",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "PENDIENTE,CONFIRMADA,CANCELADA,COMPLETADA,AUSENTE"
+    },
+    {
+      "fieldName": "enlaceTelemedicina",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "costo",
+      "fieldType": "BigDecimal"
+    },
+    {
+      "fieldName": "activo",
+      "fieldType": "Boolean",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "microserviceName": "MediCita",
+  "name": "Cita",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "medico",
+      "relationshipName": "medico",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "paciente",
+      "relationshipName": "paciente",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}
