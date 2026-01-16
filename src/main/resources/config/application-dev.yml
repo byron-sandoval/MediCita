@@ -40,7 +40,7 @@ spring:
       indent-output: true
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:postgresql://localhost:5432/MediCita
+    url: jdbc:postgresql://localhost:5434/MediCita
     username: MediCita
     password:
     hikari:
