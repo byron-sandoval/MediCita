@@ -39,9 +39,8 @@ public class HistoriaClinica implements Serializable {
     @Column(name = "activo", nullable = false)
     private Boolean activo;
 
-    @JsonIgnoreProperties(value = { "foto", "historiaClinica" }, allowSetters = true)
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(unique = true)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties(value = { "foto" }, allowSetters = true)
     private Paciente paciente;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here

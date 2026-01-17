@@ -29,6 +29,9 @@
             <column name="costo" type="decimal(21,2)">
                 <constraints nullable="true" />
             </column>
+            <column name="pagado" type="boolean">
+                <constraints nullable="true" />
+            </column>
             <column name="activo" type="boolean">
                 <constraints nullable="false" />
             </column>
@@ -65,6 +68,7 @@
             <column name="estado" type="string"/>
             <column name="enlace_telemedicina" type="string"/>
             <column name="costo" type="numeric"/>
+            <column name="pagado" type="boolean"/>
             <column name="activo" type="boolean"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>

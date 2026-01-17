@@ -38,7 +38,7 @@
       "otherEntityName": "paciente",
       "relationshipName": "paciente",
       "relationshipSide": "left",
-      "relationshipType": "one-to-one"
+      "relationshipType": "many-to-one"
     }
   ],
   "searchEngine": "no",

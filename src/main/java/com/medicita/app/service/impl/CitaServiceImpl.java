@@ -52,14 +52,14 @@ public class CitaServiceImpl implements CitaService {
         LOG.debug("Request to partially update Cita : {}", citaDTO);
 
         return citaRepository
-            .findById(citaDTO.getId())
-            .map(existingCita -> {
-                citaMapper.partialUpdate(existingCita, citaDTO);
+                .findById(citaDTO.getId())
+                .map(existingCita -> {
+                    citaMapper.partialUpdate(existingCita, citaDTO);
 
-                return existingCita;
-            })
-            .map(citaRepository::save)
-            .map(citaMapper::toDto);
+                    return existingCita;
+                })
+                .map(citaRepository::save)
+                .map(citaMapper::toDto);
     }
 
     @Override

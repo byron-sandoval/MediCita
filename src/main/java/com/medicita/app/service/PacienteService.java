@@ -1,7 +1,6 @@
 package com.medicita.app.service;
 
 import com.medicita.app.service.dto.PacienteDTO;
-import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -41,13 +40,6 @@ public interface PacienteService {
      * @return the list of entities.
      */
     Page<PacienteDTO> findAll(Pageable pageable);
-
-    /**
-     * Get all the PacienteDTO where HistoriaClinica is {@code null}.
-     *
-     * @return the {@link List} of entities.
-     */
-    List<PacienteDTO> findAllWhereHistoriaClinicaIsNull();
 
     /**
      * Get the "id" paciente.

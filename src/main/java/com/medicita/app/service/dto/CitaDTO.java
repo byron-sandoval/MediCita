@@ -29,6 +29,8 @@ public class CitaDTO implements Serializable {
 
     private BigDecimal costo;
 
+    private Boolean pagado;
+
     @NotNull
     private Boolean activo;
 
@@ -82,6 +84,14 @@ public class CitaDTO implements Serializable {
 
     public void setCosto(BigDecimal costo) {
         this.costo = costo;
+    }
+
+    public Boolean getPagado() {
+        return pagado;
+    }
+
+    public void setPagado(Boolean pagado) {
+        this.pagado = pagado;
     }
 
     public Boolean getActivo() {
@@ -139,6 +149,7 @@ public class CitaDTO implements Serializable {
             ", estado='" + getEstado() + "'" +
             ", enlaceTelemedicina='" + getEnlaceTelemedicina() + "'" +
             ", costo=" + getCosto() +
+            ", pagado='" + getPagado() + "'" +
             ", activo='" + getActivo() + "'" +
             ", medico=" + getMedico() +
             ", paciente=" + getPaciente() +
