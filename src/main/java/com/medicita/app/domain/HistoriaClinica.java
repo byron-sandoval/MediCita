@@ -5,12 +5,16 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.time.Instant;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 /**
  * A HistoriaClinica.
  */
 @Entity
 @Table(name = "historia_clinica")
+@SQLDelete(sql = "UPDATE historia_clinica SET activo = false WHERE id = ?")
+@Where(clause = "activo = true")
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class HistoriaClinica implements Serializable {
 
@@ -123,7 +127,8 @@ public class HistoriaClinica implements Serializable {
         return this;
     }
 
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and
+    // setters here
 
     @Override
     public boolean equals(Object o) {
@@ -138,7 +143,8 @@ public class HistoriaClinica implements Serializable {
 
     @Override
     public int hashCode() {
-        // see https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
+        // see
+        // https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
         return getClass().hashCode();
     }
 
@@ -146,11 +152,11 @@ public class HistoriaClinica implements Serializable {
     @Override
     public String toString() {
         return "HistoriaClinica{" +
-            "id=" + getId() +
-            ", fechaCreacion='" + getFechaCreacion() + "'" +
-            ", diagnostico='" + getDiagnostico() + "'" +
-            ", tratamiento='" + getTratamiento() + "'" +
-            ", activo='" + getActivo() + "'" +
-            "}";
+                "id=" + getId() +
+                ", fechaCreacion='" + getFechaCreacion() + "'" +
+                ", diagnostico='" + getDiagnostico() + "'" +
+                ", tratamiento='" + getTratamiento() + "'" +
+                ", activo='" + getActivo() + "'" +
+                "}";
     }
 }
