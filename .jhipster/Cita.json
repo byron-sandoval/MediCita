@@ -33,6 +33,10 @@
       "fieldType": "BigDecimal"
     },
     {
+      "fieldName": "pagado",
+      "fieldType": "Boolean"
+    },
+    {
       "fieldName": "activo",
       "fieldType": "Boolean",
       "fieldValidateRules": ["required"]

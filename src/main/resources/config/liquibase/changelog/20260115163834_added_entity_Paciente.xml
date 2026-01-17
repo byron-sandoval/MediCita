@@ -14,6 +14,18 @@
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
+            <column name="nombre" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="apellido" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="cedula" type="varchar(255)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="ux_paciente__cedula" />
+            </column>
+            <column name="email" type="varchar(255)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="ux_paciente__email" />
+            </column>
             <column name="telefono" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
@@ -53,6 +65,10 @@
                   tableName="paciente"
                   usePreparedStatements="true">
             <column name="id" type="numeric"/>
+            <column name="nombre" type="string"/>
+            <column name="apellido" type="string"/>
+            <column name="cedula" type="string"/>
+            <column name="email" type="string"/>
             <column name="telefono" type="string"/>
             <column name="fecha_nacimiento" type="date"/>
             <column name="genero" type="string"/>

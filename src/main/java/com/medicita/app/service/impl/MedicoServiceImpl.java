@@ -52,14 +52,14 @@ public class MedicoServiceImpl implements MedicoService {
         LOG.debug("Request to partially update Medico : {}", medicoDTO);
 
         return medicoRepository
-            .findById(medicoDTO.getId())
-            .map(existingMedico -> {
-                medicoMapper.partialUpdate(existingMedico, medicoDTO);
+                .findById(medicoDTO.getId())
+                .map(existingMedico -> {
+                    medicoMapper.partialUpdate(existingMedico, medicoDTO);
 
-                return existingMedico;
-            })
-            .map(medicoRepository::save)
-            .map(medicoMapper::toDto);
+                    return existingMedico;
+                })
+                .map(medicoRepository::save)
+                .map(medicoMapper::toDto);
     }
 
     @Override

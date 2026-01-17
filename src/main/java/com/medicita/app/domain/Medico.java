@@ -24,6 +24,18 @@ public class Medico implements Serializable {
     private Long id;
 
     @NotNull
+    @Column(name = "nombre", nullable = false)
+    private String nombre;
+
+    @NotNull
+    @Column(name = "apellido", nullable = false)
+    private String apellido;
+
+    @NotNull
+    @Column(name = "email", nullable = false, unique = true)
+    private String email;
+
+    @NotNull
     @Column(name = "numero_licencia", nullable = false, unique = true)
     private String numeroLicencia;
 
@@ -62,6 +74,45 @@ public class Medico implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getNombre() {
+        return this.nombre;
+    }
+
+    public Medico nombre(String nombre) {
+        this.setNombre(nombre);
+        return this;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getApellido() {
+        return this.apellido;
+    }
+
+    public Medico apellido(String apellido) {
+        this.setApellido(apellido);
+        return this;
+    }
+
+    public void setApellido(String apellido) {
+        this.apellido = apellido;
+    }
+
+    public String getEmail() {
+        return this.email;
+    }
+
+    public Medico email(String email) {
+        this.setEmail(email);
+        return this;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getNumeroLicencia() {
@@ -166,6 +217,9 @@ public class Medico implements Serializable {
     public String toString() {
         return "Medico{" +
             "id=" + getId() +
+            ", nombre='" + getNombre() + "'" +
+            ", apellido='" + getApellido() + "'" +
+            ", email='" + getEmail() + "'" +
             ", numeroLicencia='" + getNumeroLicencia() + "'" +
             ", especialidad='" + getEspecialidad() + "'" +
             ", tarifaConsulta=" + getTarifaConsulta() +

@@ -31,6 +31,9 @@ enum MetodoPago {
 // ==========================================
 
 entity Medico {
+    nombre String required
+    apellido String required
+    email String required unique
     numeroLicencia String required unique
     especialidad Especialidad required
     tarifaConsulta BigDecimal required min(0)
@@ -39,6 +42,10 @@ entity Medico {
 }
 
 entity Paciente {
+    nombre String required
+    apellido String required
+    cedula String required unique
+    email String required unique
     telefono String required
     fechaNacimiento LocalDate required
     genero Genero
@@ -52,6 +59,7 @@ entity Cita {
     estado EstadoCita required
     enlaceTelemedicina String
     costo BigDecimal
+    pagado Boolean
     activo Boolean required
 }
 
@@ -87,7 +95,7 @@ entity Adjunto {
 }
 
 entity ContenidoWeb {
-    clave String required unique 
+    clave String required unique
     valorTexto String
     imagen ImageBlob
     activo Boolean required
@@ -97,22 +105,24 @@ entity ContenidoWeb {
 // RELACIONES
 // ==========================================
 
-relationship OneToOne {
-    HistoriaClinica{paciente} to Paciente
-}
-
 relationship ManyToOne {
+    // Relación clave: Un paciente tiene muchos registros en su historia clínica
+    HistoriaClinica{paciente} to Paciente
+
     Cita{medico} to Medico
     Cita{paciente} to Paciente
+
+    // Un pago está amarrado a una cita específica
     Pago{cita} to Cita
 
+    // Los horarios de atención pertenecen a un médico
     Disponibilidad{medico} to Medico
 
-    // Relaciones para adjuntar archivos a la parte médica
+    // Archivos adjuntos para citas o diagnósticos
     Adjunto{cita} to Cita
     Adjunto{historiaClinica} to HistoriaClinica
 
-    // Relación para fotos de perfil
+    // Fotos de perfil
     Medico{foto} to Adjunto
     Paciente{foto} to Adjunto
 }

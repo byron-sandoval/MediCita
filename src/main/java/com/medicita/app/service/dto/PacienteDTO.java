@@ -15,6 +15,18 @@ public class PacienteDTO implements Serializable {
     private Long id;
 
     @NotNull
+    private String nombre;
+
+    @NotNull
+    private String apellido;
+
+    @NotNull
+    private String cedula;
+
+    @NotNull
+    private String email;
+
+    @NotNull
     private String telefono;
 
     @NotNull
@@ -36,6 +48,38 @@ public class PacienteDTO implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getApellido() {
+        return apellido;
+    }
+
+    public void setApellido(String apellido) {
+        this.apellido = apellido;
+    }
+
+    public String getCedula() {
+        return cedula;
+    }
+
+    public void setCedula(String cedula) {
+        this.cedula = cedula;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getTelefono() {
@@ -112,6 +156,10 @@ public class PacienteDTO implements Serializable {
     public String toString() {
         return "PacienteDTO{" +
             "id=" + getId() +
+            ", nombre='" + getNombre() + "'" +
+            ", apellido='" + getApellido() + "'" +
+            ", cedula='" + getCedula() + "'" +
+            ", email='" + getEmail() + "'" +
             ", telefono='" + getTelefono() + "'" +
             ", fechaNacimiento='" + getFechaNacimiento() + "'" +
             ", genero='" + getGenero() + "'" +

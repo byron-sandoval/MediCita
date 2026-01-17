@@ -44,6 +44,9 @@ public class Cita implements Serializable {
     @Column(name = "costo", precision = 21, scale = 2)
     private BigDecimal costo;
 
+    @Column(name = "pagado")
+    private Boolean pagado;
+
     @NotNull
     @Column(name = "activo", nullable = false)
     private Boolean activo;
@@ -53,7 +56,7 @@ public class Cita implements Serializable {
     private Medico medico;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "foto", "historiaClinica" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "foto" }, allowSetters = true)
     private Paciente paciente;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -136,6 +139,19 @@ public class Cita implements Serializable {
         this.costo = costo;
     }
 
+    public Boolean getPagado() {
+        return this.pagado;
+    }
+
+    public Cita pagado(Boolean pagado) {
+        this.setPagado(pagado);
+        return this;
+    }
+
+    public void setPagado(Boolean pagado) {
+        this.pagado = pagado;
+    }
+
     public Boolean getActivo() {
         return this.activo;
     }
@@ -204,6 +220,7 @@ public class Cita implements Serializable {
             ", estado='" + getEstado() + "'" +
             ", enlaceTelemedicina='" + getEnlaceTelemedicina() + "'" +
             ", costo=" + getCosto() +
+            ", pagado='" + getPagado() + "'" +
             ", activo='" + getActivo() + "'" +
             "}";
     }

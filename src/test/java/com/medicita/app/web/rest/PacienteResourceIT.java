@@ -38,6 +38,18 @@ import org.springframework.transaction.annotation.Transactional;
 @WithMockUser
 class PacienteResourceIT {
 
+    private static final String DEFAULT_NOMBRE = "AAAAAAAAAA";
+    private static final String UPDATED_NOMBRE = "BBBBBBBBBB";
+
+    private static final String DEFAULT_APELLIDO = "AAAAAAAAAA";
+    private static final String UPDATED_APELLIDO = "BBBBBBBBBB";
+
+    private static final String DEFAULT_CEDULA = "AAAAAAAAAA";
+    private static final String UPDATED_CEDULA = "BBBBBBBBBB";
+
+    private static final String DEFAULT_EMAIL = "AAAAAAAAAA";
+    private static final String UPDATED_EMAIL = "BBBBBBBBBB";
+
     private static final String DEFAULT_TELEFONO = "AAAAAAAAAA";
     private static final String UPDATED_TELEFONO = "BBBBBBBBBB";
 
@@ -86,6 +98,10 @@ class PacienteResourceIT {
      */
     public static Paciente createEntity() {
         return new Paciente()
+            .nombre(DEFAULT_NOMBRE)
+            .apellido(DEFAULT_APELLIDO)
+            .cedula(DEFAULT_CEDULA)
+            .email(DEFAULT_EMAIL)
             .telefono(DEFAULT_TELEFONO)
             .fechaNacimiento(DEFAULT_FECHA_NACIMIENTO)
             .genero(DEFAULT_GENERO)
@@ -101,6 +117,10 @@ class PacienteResourceIT {
      */
     public static Paciente createUpdatedEntity() {
         return new Paciente()
+            .nombre(UPDATED_NOMBRE)
+            .apellido(UPDATED_APELLIDO)
+            .cedula(UPDATED_CEDULA)
+            .email(UPDATED_EMAIL)
             .telefono(UPDATED_TELEFONO)
             .fechaNacimiento(UPDATED_FECHA_NACIMIENTO)
             .genero(UPDATED_GENERO)
@@ -163,6 +183,74 @@ class PacienteResourceIT {
 
         // Validate the Paciente in the database
         assertSameRepositoryCount(databaseSizeBeforeCreate);
+    }
+
+    @Test
+    @Transactional
+    void checkNombreIsRequired() throws Exception {
+        long databaseSizeBeforeTest = getRepositoryCount();
+        // set the field null
+        paciente.setNombre(null);
+
+        // Create the Paciente, which fails.
+        PacienteDTO pacienteDTO = pacienteMapper.toDto(paciente);
+
+        restPacienteMockMvc
+            .perform(post(ENTITY_API_URL).with(csrf()).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(pacienteDTO)))
+            .andExpect(status().isBadRequest());
+
+        assertSameRepositoryCount(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    void checkApellidoIsRequired() throws Exception {
+        long databaseSizeBeforeTest = getRepositoryCount();
+        // set the field null
+        paciente.setApellido(null);
+
+        // Create the Paciente, which fails.
+        PacienteDTO pacienteDTO = pacienteMapper.toDto(paciente);
+
+        restPacienteMockMvc
+            .perform(post(ENTITY_API_URL).with(csrf()).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(pacienteDTO)))
+            .andExpect(status().isBadRequest());
+
+        assertSameRepositoryCount(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    void checkCedulaIsRequired() throws Exception {
+        long databaseSizeBeforeTest = getRepositoryCount();
+        // set the field null
+        paciente.setCedula(null);
+
+        // Create the Paciente, which fails.
+        PacienteDTO pacienteDTO = pacienteMapper.toDto(paciente);
+
+        restPacienteMockMvc
+            .perform(post(ENTITY_API_URL).with(csrf()).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(pacienteDTO)))
+            .andExpect(status().isBadRequest());
+
+        assertSameRepositoryCount(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    void checkEmailIsRequired() throws Exception {
+        long databaseSizeBeforeTest = getRepositoryCount();
+        // set the field null
+        paciente.setEmail(null);
+
+        // Create the Paciente, which fails.
+        PacienteDTO pacienteDTO = pacienteMapper.toDto(paciente);
+
+        restPacienteMockMvc
+            .perform(post(ENTITY_API_URL).with(csrf()).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(pacienteDTO)))
+            .andExpect(status().isBadRequest());
+
+        assertSameRepositoryCount(databaseSizeBeforeTest);
     }
 
     @Test
@@ -245,6 +333,10 @@ class PacienteResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(paciente.getId().intValue())))
+            .andExpect(jsonPath("$.[*].nombre").value(hasItem(DEFAULT_NOMBRE)))
+            .andExpect(jsonPath("$.[*].apellido").value(hasItem(DEFAULT_APELLIDO)))
+            .andExpect(jsonPath("$.[*].cedula").value(hasItem(DEFAULT_CEDULA)))
+            .andExpect(jsonPath("$.[*].email").value(hasItem(DEFAULT_EMAIL)))
             .andExpect(jsonPath("$.[*].telefono").value(hasItem(DEFAULT_TELEFONO)))
             .andExpect(jsonPath("$.[*].fechaNacimiento").value(hasItem(DEFAULT_FECHA_NACIMIENTO.toString())))
             .andExpect(jsonPath("$.[*].genero").value(hasItem(DEFAULT_GENERO.toString())))
@@ -264,6 +356,10 @@ class PacienteResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(paciente.getId().intValue()))
+            .andExpect(jsonPath("$.nombre").value(DEFAULT_NOMBRE))
+            .andExpect(jsonPath("$.apellido").value(DEFAULT_APELLIDO))
+            .andExpect(jsonPath("$.cedula").value(DEFAULT_CEDULA))
+            .andExpect(jsonPath("$.email").value(DEFAULT_EMAIL))
             .andExpect(jsonPath("$.telefono").value(DEFAULT_TELEFONO))
             .andExpect(jsonPath("$.fechaNacimiento").value(DEFAULT_FECHA_NACIMIENTO.toString()))
             .andExpect(jsonPath("$.genero").value(DEFAULT_GENERO.toString()))
@@ -291,6 +387,10 @@ class PacienteResourceIT {
         // Disconnect from session so that the updates on updatedPaciente are not directly saved in db
         em.detach(updatedPaciente);
         updatedPaciente
+            .nombre(UPDATED_NOMBRE)
+            .apellido(UPDATED_APELLIDO)
+            .cedula(UPDATED_CEDULA)
+            .email(UPDATED_EMAIL)
             .telefono(UPDATED_TELEFONO)
             .fechaNacimiento(UPDATED_FECHA_NACIMIENTO)
             .genero(UPDATED_GENERO)
@@ -388,7 +488,7 @@ class PacienteResourceIT {
         Paciente partialUpdatedPaciente = new Paciente();
         partialUpdatedPaciente.setId(paciente.getId());
 
-        partialUpdatedPaciente.genero(UPDATED_GENERO);
+        partialUpdatedPaciente.cedula(UPDATED_CEDULA).fechaNacimiento(UPDATED_FECHA_NACIMIENTO).activo(UPDATED_ACTIVO);
 
         restPacienteMockMvc
             .perform(
@@ -418,6 +518,10 @@ class PacienteResourceIT {
         partialUpdatedPaciente.setId(paciente.getId());
 
         partialUpdatedPaciente
+            .nombre(UPDATED_NOMBRE)
+            .apellido(UPDATED_APELLIDO)
+            .cedula(UPDATED_CEDULA)
+            .email(UPDATED_EMAIL)
             .telefono(UPDATED_TELEFONO)
             .fechaNacimiento(UPDATED_FECHA_NACIMIENTO)
             .genero(UPDATED_GENERO)

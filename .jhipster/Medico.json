@@ -8,6 +8,21 @@
   "dto": "mapstruct",
   "fields": [
     {
+      "fieldName": "nombre",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "apellido",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "email",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "unique"]
+    },
+    {
       "fieldName": "numeroLicencia",
       "fieldType": "String",
       "fieldValidateRules": ["required", "unique"]
