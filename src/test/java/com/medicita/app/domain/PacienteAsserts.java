@@ -47,6 +47,10 @@ public class PacienteAsserts {
     public static void assertPacienteUpdatableFieldsEquals(Paciente expected, Paciente actual) {
         assertThat(actual)
             .as("Verify Paciente relevant properties")
+            .satisfies(a -> assertThat(a.getNombre()).as("check nombre").isEqualTo(expected.getNombre()))
+            .satisfies(a -> assertThat(a.getApellido()).as("check apellido").isEqualTo(expected.getApellido()))
+            .satisfies(a -> assertThat(a.getCedula()).as("check cedula").isEqualTo(expected.getCedula()))
+            .satisfies(a -> assertThat(a.getEmail()).as("check email").isEqualTo(expected.getEmail()))
             .satisfies(a -> assertThat(a.getTelefono()).as("check telefono").isEqualTo(expected.getTelefono()))
             .satisfies(a -> assertThat(a.getFechaNacimiento()).as("check fechaNacimiento").isEqualTo(expected.getFechaNacimiento()))
             .satisfies(a -> assertThat(a.getGenero()).as("check genero").isEqualTo(expected.getGenero()))

@@ -55,6 +55,9 @@ class CitaResourceIT {
     private static final BigDecimal DEFAULT_COSTO = new BigDecimal(1);
     private static final BigDecimal UPDATED_COSTO = new BigDecimal(2);
 
+    private static final Boolean DEFAULT_PAGADO = false;
+    private static final Boolean UPDATED_PAGADO = true;
+
     private static final Boolean DEFAULT_ACTIVO = false;
     private static final Boolean UPDATED_ACTIVO = true;
 
@@ -96,6 +99,7 @@ class CitaResourceIT {
             .estado(DEFAULT_ESTADO)
             .enlaceTelemedicina(DEFAULT_ENLACE_TELEMEDICINA)
             .costo(DEFAULT_COSTO)
+            .pagado(DEFAULT_PAGADO)
             .activo(DEFAULT_ACTIVO);
     }
 
@@ -112,6 +116,7 @@ class CitaResourceIT {
             .estado(UPDATED_ESTADO)
             .enlaceTelemedicina(UPDATED_ENLACE_TELEMEDICINA)
             .costo(UPDATED_COSTO)
+            .pagado(UPDATED_PAGADO)
             .activo(UPDATED_ACTIVO);
     }
 
@@ -255,6 +260,7 @@ class CitaResourceIT {
             .andExpect(jsonPath("$.[*].estado").value(hasItem(DEFAULT_ESTADO.toString())))
             .andExpect(jsonPath("$.[*].enlaceTelemedicina").value(hasItem(DEFAULT_ENLACE_TELEMEDICINA)))
             .andExpect(jsonPath("$.[*].costo").value(hasItem(sameNumber(DEFAULT_COSTO))))
+            .andExpect(jsonPath("$.[*].pagado").value(hasItem(DEFAULT_PAGADO)))
             .andExpect(jsonPath("$.[*].activo").value(hasItem(DEFAULT_ACTIVO)));
     }
 
@@ -275,6 +281,7 @@ class CitaResourceIT {
             .andExpect(jsonPath("$.estado").value(DEFAULT_ESTADO.toString()))
             .andExpect(jsonPath("$.enlaceTelemedicina").value(DEFAULT_ENLACE_TELEMEDICINA))
             .andExpect(jsonPath("$.costo").value(sameNumber(DEFAULT_COSTO)))
+            .andExpect(jsonPath("$.pagado").value(DEFAULT_PAGADO))
             .andExpect(jsonPath("$.activo").value(DEFAULT_ACTIVO));
     }
 
@@ -303,6 +310,7 @@ class CitaResourceIT {
             .estado(UPDATED_ESTADO)
             .enlaceTelemedicina(UPDATED_ENLACE_TELEMEDICINA)
             .costo(UPDATED_COSTO)
+            .pagado(UPDATED_PAGADO)
             .activo(UPDATED_ACTIVO);
         CitaDTO citaDTO = citaMapper.toDto(updatedCita);
 
@@ -396,7 +404,7 @@ class CitaResourceIT {
         Cita partialUpdatedCita = new Cita();
         partialUpdatedCita.setId(cita.getId());
 
-        partialUpdatedCita.enlaceTelemedicina(UPDATED_ENLACE_TELEMEDICINA).costo(UPDATED_COSTO).activo(UPDATED_ACTIVO);
+        partialUpdatedCita.enlaceTelemedicina(UPDATED_ENLACE_TELEMEDICINA).costo(UPDATED_COSTO).pagado(UPDATED_PAGADO);
 
         restCitaMockMvc
             .perform(
@@ -431,6 +439,7 @@ class CitaResourceIT {
             .estado(UPDATED_ESTADO)
             .enlaceTelemedicina(UPDATED_ENLACE_TELEMEDICINA)
             .costo(UPDATED_COSTO)
+            .pagado(UPDATED_PAGADO)
             .activo(UPDATED_ACTIVO);
 
         restCitaMockMvc

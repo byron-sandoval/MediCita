@@ -38,6 +38,15 @@ import org.springframework.transaction.annotation.Transactional;
 @WithMockUser
 class MedicoResourceIT {
 
+    private static final String DEFAULT_NOMBRE = "AAAAAAAAAA";
+    private static final String UPDATED_NOMBRE = "BBBBBBBBBB";
+
+    private static final String DEFAULT_APELLIDO = "AAAAAAAAAA";
+    private static final String UPDATED_APELLIDO = "BBBBBBBBBB";
+
+    private static final String DEFAULT_EMAIL = "AAAAAAAAAA";
+    private static final String UPDATED_EMAIL = "BBBBBBBBBB";
+
     private static final String DEFAULT_NUMERO_LICENCIA = "AAAAAAAAAA";
     private static final String UPDATED_NUMERO_LICENCIA = "BBBBBBBBBB";
 
@@ -86,6 +95,9 @@ class MedicoResourceIT {
      */
     public static Medico createEntity() {
         return new Medico()
+            .nombre(DEFAULT_NOMBRE)
+            .apellido(DEFAULT_APELLIDO)
+            .email(DEFAULT_EMAIL)
             .numeroLicencia(DEFAULT_NUMERO_LICENCIA)
             .especialidad(DEFAULT_ESPECIALIDAD)
             .tarifaConsulta(DEFAULT_TARIFA_CONSULTA)
@@ -101,6 +113,9 @@ class MedicoResourceIT {
      */
     public static Medico createUpdatedEntity() {
         return new Medico()
+            .nombre(UPDATED_NOMBRE)
+            .apellido(UPDATED_APELLIDO)
+            .email(UPDATED_EMAIL)
             .numeroLicencia(UPDATED_NUMERO_LICENCIA)
             .especialidad(UPDATED_ESPECIALIDAD)
             .tarifaConsulta(UPDATED_TARIFA_CONSULTA)
@@ -161,6 +176,57 @@ class MedicoResourceIT {
 
         // Validate the Medico in the database
         assertSameRepositoryCount(databaseSizeBeforeCreate);
+    }
+
+    @Test
+    @Transactional
+    void checkNombreIsRequired() throws Exception {
+        long databaseSizeBeforeTest = getRepositoryCount();
+        // set the field null
+        medico.setNombre(null);
+
+        // Create the Medico, which fails.
+        MedicoDTO medicoDTO = medicoMapper.toDto(medico);
+
+        restMedicoMockMvc
+            .perform(post(ENTITY_API_URL).with(csrf()).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(medicoDTO)))
+            .andExpect(status().isBadRequest());
+
+        assertSameRepositoryCount(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    void checkApellidoIsRequired() throws Exception {
+        long databaseSizeBeforeTest = getRepositoryCount();
+        // set the field null
+        medico.setApellido(null);
+
+        // Create the Medico, which fails.
+        MedicoDTO medicoDTO = medicoMapper.toDto(medico);
+
+        restMedicoMockMvc
+            .perform(post(ENTITY_API_URL).with(csrf()).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(medicoDTO)))
+            .andExpect(status().isBadRequest());
+
+        assertSameRepositoryCount(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    void checkEmailIsRequired() throws Exception {
+        long databaseSizeBeforeTest = getRepositoryCount();
+        // set the field null
+        medico.setEmail(null);
+
+        // Create the Medico, which fails.
+        MedicoDTO medicoDTO = medicoMapper.toDto(medico);
+
+        restMedicoMockMvc
+            .perform(post(ENTITY_API_URL).with(csrf()).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(medicoDTO)))
+            .andExpect(status().isBadRequest());
+
+        assertSameRepositoryCount(databaseSizeBeforeTest);
     }
 
     @Test
@@ -260,6 +326,9 @@ class MedicoResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(medico.getId().intValue())))
+            .andExpect(jsonPath("$.[*].nombre").value(hasItem(DEFAULT_NOMBRE)))
+            .andExpect(jsonPath("$.[*].apellido").value(hasItem(DEFAULT_APELLIDO)))
+            .andExpect(jsonPath("$.[*].email").value(hasItem(DEFAULT_EMAIL)))
             .andExpect(jsonPath("$.[*].numeroLicencia").value(hasItem(DEFAULT_NUMERO_LICENCIA)))
             .andExpect(jsonPath("$.[*].especialidad").value(hasItem(DEFAULT_ESPECIALIDAD.toString())))
             .andExpect(jsonPath("$.[*].tarifaConsulta").value(hasItem(sameNumber(DEFAULT_TARIFA_CONSULTA))))
@@ -279,6 +348,9 @@ class MedicoResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(medico.getId().intValue()))
+            .andExpect(jsonPath("$.nombre").value(DEFAULT_NOMBRE))
+            .andExpect(jsonPath("$.apellido").value(DEFAULT_APELLIDO))
+            .andExpect(jsonPath("$.email").value(DEFAULT_EMAIL))
             .andExpect(jsonPath("$.numeroLicencia").value(DEFAULT_NUMERO_LICENCIA))
             .andExpect(jsonPath("$.especialidad").value(DEFAULT_ESPECIALIDAD.toString()))
             .andExpect(jsonPath("$.tarifaConsulta").value(sameNumber(DEFAULT_TARIFA_CONSULTA)))
@@ -306,6 +378,9 @@ class MedicoResourceIT {
         // Disconnect from session so that the updates on updatedMedico are not directly saved in db
         em.detach(updatedMedico);
         updatedMedico
+            .nombre(UPDATED_NOMBRE)
+            .apellido(UPDATED_APELLIDO)
+            .email(UPDATED_EMAIL)
             .numeroLicencia(UPDATED_NUMERO_LICENCIA)
             .especialidad(UPDATED_ESPECIALIDAD)
             .tarifaConsulta(UPDATED_TARIFA_CONSULTA)
@@ -403,7 +478,7 @@ class MedicoResourceIT {
         Medico partialUpdatedMedico = new Medico();
         partialUpdatedMedico.setId(medico.getId());
 
-        partialUpdatedMedico.tarifaConsulta(UPDATED_TARIFA_CONSULTA);
+        partialUpdatedMedico.email(UPDATED_EMAIL).tarifaConsulta(UPDATED_TARIFA_CONSULTA).keycloakId(UPDATED_KEYCLOAK_ID);
 
         restMedicoMockMvc
             .perform(
@@ -433,6 +508,9 @@ class MedicoResourceIT {
         partialUpdatedMedico.setId(medico.getId());
 
         partialUpdatedMedico
+            .nombre(UPDATED_NOMBRE)
+            .apellido(UPDATED_APELLIDO)
+            .email(UPDATED_EMAIL)
             .numeroLicencia(UPDATED_NUMERO_LICENCIA)
             .especialidad(UPDATED_ESPECIALIDAD)
             .tarifaConsulta(UPDATED_TARIFA_CONSULTA)

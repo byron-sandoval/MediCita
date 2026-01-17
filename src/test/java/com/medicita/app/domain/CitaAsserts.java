@@ -54,6 +54,7 @@ public class CitaAsserts {
             .satisfies(a -> assertThat(a.getEnlaceTelemedicina()).as("check enlaceTelemedicina").isEqualTo(expected.getEnlaceTelemedicina())
             )
             .satisfies(a -> assertThat(a.getCosto()).as("check costo").usingComparator(bigDecimalCompareTo).isEqualTo(expected.getCosto()))
+            .satisfies(a -> assertThat(a.getPagado()).as("check pagado").isEqualTo(expected.getPagado()))
             .satisfies(a -> assertThat(a.getActivo()).as("check activo").isEqualTo(expected.getActivo()));
     }
 

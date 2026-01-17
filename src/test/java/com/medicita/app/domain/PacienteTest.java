@@ -1,7 +1,6 @@
 package com.medicita.app.domain;
 
 import static com.medicita.app.domain.AdjuntoTestSamples.*;
-import static com.medicita.app.domain.HistoriaClinicaTestSamples.*;
 import static com.medicita.app.domain.PacienteTestSamples.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -34,19 +33,5 @@ class PacienteTest {
 
         paciente.foto(null);
         assertThat(paciente.getFoto()).isNull();
-    }
-
-    @Test
-    void historiaClinicaTest() {
-        Paciente paciente = getPacienteRandomSampleGenerator();
-        HistoriaClinica historiaClinicaBack = getHistoriaClinicaRandomSampleGenerator();
-
-        paciente.setHistoriaClinica(historiaClinicaBack);
-        assertThat(paciente.getHistoriaClinica()).isEqualTo(historiaClinicaBack);
-        assertThat(historiaClinicaBack.getPaciente()).isEqualTo(paciente);
-
-        paciente.historiaClinica(null);
-        assertThat(paciente.getHistoriaClinica()).isNull();
-        assertThat(historiaClinicaBack.getPaciente()).isNull();
     }
 }
