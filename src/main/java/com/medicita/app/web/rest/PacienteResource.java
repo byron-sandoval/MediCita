@@ -18,6 +18,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
@@ -56,6 +57,7 @@ public class PacienteResource {
      *         the paciente has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_MEDICO')")
     @PostMapping("")
     public ResponseEntity<PacienteDTO> createPaciente(@Valid @RequestBody PacienteDTO pacienteDTO)
             throws URISyntaxException {
@@ -83,6 +85,7 @@ public class PacienteResource {
      *         couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<PacienteDTO> updatePaciente(
             @PathVariable(value = "id", required = false) final Long id,
@@ -122,6 +125,7 @@ public class PacienteResource {
      *         couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_MEDICO', 'ROLE_USER')")
     @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<PacienteDTO> partialUpdatePaciente(
             @PathVariable(value = "id", required = false) final Long id,
@@ -153,6 +157,7 @@ public class PacienteResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list
      *         of pacientes in body.
      */
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_MEDICO', 'ROLE_USER')")
     @GetMapping("")
     public ResponseEntity<List<PacienteDTO>> getAllPacientes(
             @org.springdoc.core.annotations.ParameterObject Pageable pageable) {
@@ -170,6 +175,7 @@ public class PacienteResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body
      *         the pacienteDTO, or with status {@code 404 (Not Found)}.
      */
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_MEDICO', 'ROLE_USER')")
     @GetMapping("/{id}")
     public ResponseEntity<PacienteDTO> getPaciente(@PathVariable("id") Long id) {
         LOG.debug("REST request to get Paciente : {}", id);
@@ -183,6 +189,7 @@ public class PacienteResource {
      * @param id the id of the pacienteDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletePaciente(@PathVariable("id") Long id) {
         LOG.debug("REST request to delete Paciente : {}", id);
