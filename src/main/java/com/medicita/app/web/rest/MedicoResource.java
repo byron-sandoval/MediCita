@@ -18,6 +18,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
@@ -51,9 +52,12 @@ public class MedicoResource {
      * {@code POST  /medicos} : Create a new medico.
      *
      * @param medicoDTO the medicoDTO to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new medicoDTO, or with status {@code 400 (Bad Request)} if the medico has already an ID.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with
+     *         body the new medicoDTO, or with status {@code 400 (Bad Request)} if
+     *         the medico has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PostMapping("")
     public ResponseEntity<MedicoDTO> createMedico(@Valid @RequestBody MedicoDTO medicoDTO) throws URISyntaxException {
         LOG.debug("REST request to save Medico : {}", medicoDTO);
@@ -62,25 +66,29 @@ public class MedicoResource {
         }
         medicoDTO = medicoService.save(medicoDTO);
         return ResponseEntity.created(new URI("/api/medicos/" + medicoDTO.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, medicoDTO.getId().toString()))
-            .body(medicoDTO);
+                .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME,
+                        medicoDTO.getId().toString()))
+                .body(medicoDTO);
     }
 
     /**
      * {@code PUT  /medicos/:id} : Updates an existing medico.
      *
-     * @param id the id of the medicoDTO to save.
+     * @param id        the id of the medicoDTO to save.
      * @param medicoDTO the medicoDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated medicoDTO,
-     * or with status {@code 400 (Bad Request)} if the medicoDTO is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the medicoDTO couldn't be updated.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body
+     *         the updated medicoDTO,
+     *         or with status {@code 400 (Bad Request)} if the medicoDTO is not
+     *         valid,
+     *         or with status {@code 500 (Internal Server Error)} if the medicoDTO
+     *         couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_MEDICO')")
     @PutMapping("/{id}")
     public ResponseEntity<MedicoDTO> updateMedico(
-        @PathVariable(value = "id", required = false) final Long id,
-        @Valid @RequestBody MedicoDTO medicoDTO
-    ) throws URISyntaxException {
+            @PathVariable(value = "id", required = false) final Long id,
+            @Valid @RequestBody MedicoDTO medicoDTO) throws URISyntaxException {
         LOG.debug("REST request to update Medico : {}, {}", id, medicoDTO);
         if (medicoDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
@@ -95,26 +103,31 @@ public class MedicoResource {
 
         medicoDTO = medicoService.update(medicoDTO);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, medicoDTO.getId().toString()))
-            .body(medicoDTO);
+                .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME,
+                        medicoDTO.getId().toString()))
+                .body(medicoDTO);
     }
 
     /**
-     * {@code PATCH  /medicos/:id} : Partial updates given fields of an existing medico, field will ignore if it is null
+     * {@code PATCH  /medicos/:id} : Partial updates given fields of an existing
+     * medico, field will ignore if it is null
      *
-     * @param id the id of the medicoDTO to save.
+     * @param id        the id of the medicoDTO to save.
      * @param medicoDTO the medicoDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated medicoDTO,
-     * or with status {@code 400 (Bad Request)} if the medicoDTO is not valid,
-     * or with status {@code 404 (Not Found)} if the medicoDTO is not found,
-     * or with status {@code 500 (Internal Server Error)} if the medicoDTO couldn't be updated.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body
+     *         the updated medicoDTO,
+     *         or with status {@code 400 (Bad Request)} if the medicoDTO is not
+     *         valid,
+     *         or with status {@code 404 (Not Found)} if the medicoDTO is not found,
+     *         or with status {@code 500 (Internal Server Error)} if the medicoDTO
+     *         couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_MEDICO')")
     @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<MedicoDTO> partialUpdateMedico(
-        @PathVariable(value = "id", required = false) final Long id,
-        @NotNull @RequestBody MedicoDTO medicoDTO
-    ) throws URISyntaxException {
+            @PathVariable(value = "id", required = false) final Long id,
+            @NotNull @RequestBody MedicoDTO medicoDTO) throws URISyntaxException {
         LOG.debug("REST request to partial update Medico partially : {}, {}", id, medicoDTO);
         if (medicoDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
@@ -130,22 +143,25 @@ public class MedicoResource {
         Optional<MedicoDTO> result = medicoService.partialUpdate(medicoDTO);
 
         return ResponseUtil.wrapOrNotFound(
-            result,
-            HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, medicoDTO.getId().toString())
-        );
+                result,
+                HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, medicoDTO.getId().toString()));
     }
 
     /**
      * {@code GET  /medicos} : get all the medicos.
      *
      * @param pageable the pagination information.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of medicos in body.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list
+     *         of medicos in body.
      */
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_MEDICO', 'ROLE_USER')")
     @GetMapping("")
-    public ResponseEntity<List<MedicoDTO>> getAllMedicos(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
+    public ResponseEntity<List<MedicoDTO>> getAllMedicos(
+            @org.springdoc.core.annotations.ParameterObject Pageable pageable) {
         LOG.debug("REST request to get a page of Medicos");
         Page<MedicoDTO> page = medicoService.findAll(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        HttpHeaders headers = PaginationUtil
+                .generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
@@ -153,8 +169,10 @@ public class MedicoResource {
      * {@code GET  /medicos/:id} : get the "id" medico.
      *
      * @param id the id of the medicoDTO to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the medicoDTO, or with status {@code 404 (Not Found)}.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body
+     *         the medicoDTO, or with status {@code 404 (Not Found)}.
      */
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_MEDICO', 'ROLE_USER')")
     @GetMapping("/{id}")
     public ResponseEntity<MedicoDTO> getMedico(@PathVariable("id") Long id) {
         LOG.debug("REST request to get Medico : {}", id);
@@ -168,12 +186,13 @@ public class MedicoResource {
      * @param id the id of the medicoDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteMedico(@PathVariable("id") Long id) {
         LOG.debug("REST request to delete Medico : {}", id);
         medicoService.delete(id);
         return ResponseEntity.noContent()
-            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
-            .build();
+                .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
+                .build();
     }
 }

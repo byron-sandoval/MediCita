@@ -5,6 +5,7 @@ import com.medicita.app.repository.HistoriaClinicaRepository;
 import com.medicita.app.service.HistoriaClinicaService;
 import com.medicita.app.service.dto.HistoriaClinicaDTO;
 import com.medicita.app.service.mapper.HistoriaClinicaMapper;
+import java.time.Instant;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +15,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Service Implementation for managing {@link com.medicita.app.domain.HistoriaClinica}.
+ * Service Implementation for managing
+ * {@link com.medicita.app.domain.HistoriaClinica}.
  */
 @Service
 @Transactional
@@ -26,7 +28,8 @@ public class HistoriaClinicaServiceImpl implements HistoriaClinicaService {
 
     private final HistoriaClinicaMapper historiaClinicaMapper;
 
-    public HistoriaClinicaServiceImpl(HistoriaClinicaRepository historiaClinicaRepository, HistoriaClinicaMapper historiaClinicaMapper) {
+    public HistoriaClinicaServiceImpl(HistoriaClinicaRepository historiaClinicaRepository,
+            HistoriaClinicaMapper historiaClinicaMapper) {
         this.historiaClinicaRepository = historiaClinicaRepository;
         this.historiaClinicaMapper = historiaClinicaMapper;
     }
@@ -52,14 +55,14 @@ public class HistoriaClinicaServiceImpl implements HistoriaClinicaService {
         LOG.debug("Request to partially update HistoriaClinica : {}", historiaClinicaDTO);
 
         return historiaClinicaRepository
-            .findById(historiaClinicaDTO.getId())
-            .map(existingHistoriaClinica -> {
-                historiaClinicaMapper.partialUpdate(existingHistoriaClinica, historiaClinicaDTO);
+                .findById(historiaClinicaDTO.getId())
+                .map(existingHistoriaClinica -> {
+                    historiaClinicaMapper.partialUpdate(existingHistoriaClinica, historiaClinicaDTO);
 
-                return existingHistoriaClinica;
-            })
-            .map(historiaClinicaRepository::save)
-            .map(historiaClinicaMapper::toDto);
+                    return existingHistoriaClinica;
+                })
+                .map(historiaClinicaRepository::save)
+                .map(historiaClinicaMapper::toDto);
     }
 
     @Override

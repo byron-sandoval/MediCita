@@ -18,6 +18,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
@@ -42,7 +43,8 @@ public class HistoriaClinicaResource {
 
     private final HistoriaClinicaRepository historiaClinicaRepository;
 
-    public HistoriaClinicaResource(HistoriaClinicaService historiaClinicaService, HistoriaClinicaRepository historiaClinicaRepository) {
+    public HistoriaClinicaResource(HistoriaClinicaService historiaClinicaService,
+            HistoriaClinicaRepository historiaClinicaRepository) {
         this.historiaClinicaService = historiaClinicaService;
         this.historiaClinicaRepository = historiaClinicaRepository;
     }
@@ -51,37 +53,46 @@ public class HistoriaClinicaResource {
      * {@code POST  /historia-clinicas} : Create a new historiaClinica.
      *
      * @param historiaClinicaDTO the historiaClinicaDTO to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new historiaClinicaDTO, or with status {@code 400 (Bad Request)} if the historiaClinica has already an ID.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with
+     *         body the new historiaClinicaDTO, or with status
+     *         {@code 400 (Bad Request)} if the historiaClinica has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
+    @PreAuthorize("hasAuthority('ROLE_MEDICO')")
     @PostMapping("")
-    public ResponseEntity<HistoriaClinicaDTO> createHistoriaClinica(@Valid @RequestBody HistoriaClinicaDTO historiaClinicaDTO)
-        throws URISyntaxException {
+    public ResponseEntity<HistoriaClinicaDTO> createHistoriaClinica(
+            @Valid @RequestBody HistoriaClinicaDTO historiaClinicaDTO)
+            throws URISyntaxException {
         LOG.debug("REST request to save HistoriaClinica : {}", historiaClinicaDTO);
         if (historiaClinicaDTO.getId() != null) {
-            throw new BadRequestAlertException("A new historiaClinica cannot already have an ID", ENTITY_NAME, "idexists");
+            throw new BadRequestAlertException("A new historiaClinica cannot already have an ID", ENTITY_NAME,
+                    "idexists");
         }
         historiaClinicaDTO = historiaClinicaService.save(historiaClinicaDTO);
         return ResponseEntity.created(new URI("/api/historia-clinicas/" + historiaClinicaDTO.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, historiaClinicaDTO.getId().toString()))
-            .body(historiaClinicaDTO);
+                .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME,
+                        historiaClinicaDTO.getId().toString()))
+                .body(historiaClinicaDTO);
     }
 
     /**
      * {@code PUT  /historia-clinicas/:id} : Updates an existing historiaClinica.
      *
-     * @param id the id of the historiaClinicaDTO to save.
+     * @param id                 the id of the historiaClinicaDTO to save.
      * @param historiaClinicaDTO the historiaClinicaDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated historiaClinicaDTO,
-     * or with status {@code 400 (Bad Request)} if the historiaClinicaDTO is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the historiaClinicaDTO couldn't be updated.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body
+     *         the updated historiaClinicaDTO,
+     *         or with status {@code 400 (Bad Request)} if the historiaClinicaDTO is
+     *         not valid,
+     *         or with status {@code 500 (Internal Server Error)} if the
+     *         historiaClinicaDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
+    @PreAuthorize("hasAuthority('ROLE_MEDICO')")
     @PutMapping("/{id}")
     public ResponseEntity<HistoriaClinicaDTO> updateHistoriaClinica(
-        @PathVariable(value = "id", required = false) final Long id,
-        @Valid @RequestBody HistoriaClinicaDTO historiaClinicaDTO
-    ) throws URISyntaxException {
+            @PathVariable(value = "id", required = false) final Long id,
+            @Valid @RequestBody HistoriaClinicaDTO historiaClinicaDTO) throws URISyntaxException {
         LOG.debug("REST request to update HistoriaClinica : {}, {}", id, historiaClinicaDTO);
         if (historiaClinicaDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
@@ -96,26 +107,32 @@ public class HistoriaClinicaResource {
 
         historiaClinicaDTO = historiaClinicaService.update(historiaClinicaDTO);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, historiaClinicaDTO.getId().toString()))
-            .body(historiaClinicaDTO);
+                .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME,
+                        historiaClinicaDTO.getId().toString()))
+                .body(historiaClinicaDTO);
     }
 
     /**
-     * {@code PATCH  /historia-clinicas/:id} : Partial updates given fields of an existing historiaClinica, field will ignore if it is null
+     * {@code PATCH  /historia-clinicas/:id} : Partial updates given fields of an
+     * existing historiaClinica, field will ignore if it is null
      *
-     * @param id the id of the historiaClinicaDTO to save.
+     * @param id                 the id of the historiaClinicaDTO to save.
      * @param historiaClinicaDTO the historiaClinicaDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated historiaClinicaDTO,
-     * or with status {@code 400 (Bad Request)} if the historiaClinicaDTO is not valid,
-     * or with status {@code 404 (Not Found)} if the historiaClinicaDTO is not found,
-     * or with status {@code 500 (Internal Server Error)} if the historiaClinicaDTO couldn't be updated.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body
+     *         the updated historiaClinicaDTO,
+     *         or with status {@code 400 (Bad Request)} if the historiaClinicaDTO is
+     *         not valid,
+     *         or with status {@code 404 (Not Found)} if the historiaClinicaDTO is
+     *         not found,
+     *         or with status {@code 500 (Internal Server Error)} if the
+     *         historiaClinicaDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
+    @PreAuthorize("hasAuthority( 'ROLE_MEDICO')")
     @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<HistoriaClinicaDTO> partialUpdateHistoriaClinica(
-        @PathVariable(value = "id", required = false) final Long id,
-        @NotNull @RequestBody HistoriaClinicaDTO historiaClinicaDTO
-    ) throws URISyntaxException {
+            @PathVariable(value = "id", required = false) final Long id,
+            @NotNull @RequestBody HistoriaClinicaDTO historiaClinicaDTO) throws URISyntaxException {
         LOG.debug("REST request to partial update HistoriaClinica partially : {}, {}", id, historiaClinicaDTO);
         if (historiaClinicaDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
@@ -131,24 +148,26 @@ public class HistoriaClinicaResource {
         Optional<HistoriaClinicaDTO> result = historiaClinicaService.partialUpdate(historiaClinicaDTO);
 
         return ResponseUtil.wrapOrNotFound(
-            result,
-            HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, historiaClinicaDTO.getId().toString())
-        );
+                result,
+                HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME,
+                        historiaClinicaDTO.getId().toString()));
     }
 
     /**
      * {@code GET  /historia-clinicas} : get all the historiaClinicas.
      *
      * @param pageable the pagination information.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of historiaClinicas in body.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list
+     *         of historiaClinicas in body.
      */
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_MEDICO', 'ROLE_USER')")
     @GetMapping("")
     public ResponseEntity<List<HistoriaClinicaDTO>> getAllHistoriaClinicas(
-        @org.springdoc.core.annotations.ParameterObject Pageable pageable
-    ) {
+            @org.springdoc.core.annotations.ParameterObject Pageable pageable) {
         LOG.debug("REST request to get a page of HistoriaClinicas");
         Page<HistoriaClinicaDTO> page = historiaClinicaService.findAll(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        HttpHeaders headers = PaginationUtil
+                .generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
@@ -156,8 +175,10 @@ public class HistoriaClinicaResource {
      * {@code GET  /historia-clinicas/:id} : get the "id" historiaClinica.
      *
      * @param id the id of the historiaClinicaDTO to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the historiaClinicaDTO, or with status {@code 404 (Not Found)}.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body
+     *         the historiaClinicaDTO, or with status {@code 404 (Not Found)}.
      */
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_MEDICO', 'ROLE_USER')")
     @GetMapping("/{id}")
     public ResponseEntity<HistoriaClinicaDTO> getHistoriaClinica(@PathVariable("id") Long id) {
         LOG.debug("REST request to get HistoriaClinica : {}", id);
@@ -171,12 +192,13 @@ public class HistoriaClinicaResource {
      * @param id the id of the historiaClinicaDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteHistoriaClinica(@PathVariable("id") Long id) {
         LOG.debug("REST request to delete HistoriaClinica : {}", id);
         historiaClinicaService.delete(id);
         return ResponseEntity.noContent()
-            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
-            .build();
+                .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
+                .build();
     }
 }

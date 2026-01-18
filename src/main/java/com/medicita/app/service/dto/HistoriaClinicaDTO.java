@@ -13,7 +13,6 @@ public class HistoriaClinicaDTO implements Serializable {
 
     private Long id;
 
-    @NotNull
     private Instant fechaCreacion;
 
     @NotNull
@@ -101,12 +100,12 @@ public class HistoriaClinicaDTO implements Serializable {
     @Override
     public String toString() {
         return "HistoriaClinicaDTO{" +
-            "id=" + getId() +
-            ", fechaCreacion='" + getFechaCreacion() + "'" +
-            ", diagnostico='" + getDiagnostico() + "'" +
-            ", tratamiento='" + getTratamiento() + "'" +
-            ", activo='" + getActivo() + "'" +
-            ", paciente=" + getPaciente() +
-            "}";
+                "id=" + getId() +
+                ", fechaCreacion='" + getFechaCreacion() + "'" +
+                ", diagnostico='" + getDiagnostico() + "'" +
+                ", tratamiento='" + getTratamiento() + "'" +
+                ", activo='" + getActivo() + "'" +
+                ", paciente=" + getPaciente() +
+                "}";
     }
 }

@@ -18,6 +18,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
@@ -56,6 +57,7 @@ public class PagoResource {
      *         pago has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_USER')")
     @PostMapping("")
     public ResponseEntity<PagoDTO> createPago(@Valid @RequestBody PagoDTO pagoDTO) throws URISyntaxException {
         LOG.debug("REST request to save Pago : {}", pagoDTO);
@@ -81,6 +83,7 @@ public class PagoResource {
      *         couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<PagoDTO> updatePago(
             @PathVariable(value = "id", required = false) final Long id,
@@ -118,6 +121,7 @@ public class PagoResource {
      *         couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<PagoDTO> partialUpdatePago(
             @PathVariable(value = "id", required = false) final Long id,
@@ -148,6 +152,7 @@ public class PagoResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list
      *         of pagos in body.
      */
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_MEDICO', 'ROLE_USER')")
     @GetMapping("")
     public ResponseEntity<List<PagoDTO>> getAllPagos(
             @org.springdoc.core.annotations.ParameterObject Pageable pageable) {
@@ -165,6 +170,7 @@ public class PagoResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body
      *         the pagoDTO, or with status {@code 404 (Not Found)}.
      */
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_MEDICO', 'ROLE_USER')")
     @GetMapping("/{id}")
     public ResponseEntity<PagoDTO> getPago(@PathVariable("id") Long id) {
         LOG.debug("REST request to get Pago : {}", id);
@@ -178,6 +184,7 @@ public class PagoResource {
      * @param id the id of the pagoDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletePago(@PathVariable("id") Long id) {
         LOG.debug("REST request to delete Pago : {}", id);

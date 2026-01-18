@@ -18,6 +18,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
@@ -42,7 +43,8 @@ public class ContenidoWebResource {
 
     private final ContenidoWebRepository contenidoWebRepository;
 
-    public ContenidoWebResource(ContenidoWebService contenidoWebService, ContenidoWebRepository contenidoWebRepository) {
+    public ContenidoWebResource(ContenidoWebService contenidoWebService,
+            ContenidoWebRepository contenidoWebRepository) {
         this.contenidoWebService = contenidoWebService;
         this.contenidoWebRepository = contenidoWebRepository;
     }
@@ -51,37 +53,44 @@ public class ContenidoWebResource {
      * {@code POST  /contenido-webs} : Create a new contenidoWeb.
      *
      * @param contenidoWebDTO the contenidoWebDTO to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new contenidoWebDTO, or with status {@code 400 (Bad Request)} if the contenidoWeb has already an ID.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with
+     *         body the new contenidoWebDTO, or with status
+     *         {@code 400 (Bad Request)} if the contenidoWeb has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PostMapping("")
     public ResponseEntity<ContenidoWebDTO> createContenidoWeb(@Valid @RequestBody ContenidoWebDTO contenidoWebDTO)
-        throws URISyntaxException {
+            throws URISyntaxException {
         LOG.debug("REST request to save ContenidoWeb : {}", contenidoWebDTO);
         if (contenidoWebDTO.getId() != null) {
             throw new BadRequestAlertException("A new contenidoWeb cannot already have an ID", ENTITY_NAME, "idexists");
         }
         contenidoWebDTO = contenidoWebService.save(contenidoWebDTO);
         return ResponseEntity.created(new URI("/api/contenido-webs/" + contenidoWebDTO.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, contenidoWebDTO.getId().toString()))
-            .body(contenidoWebDTO);
+                .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME,
+                        contenidoWebDTO.getId().toString()))
+                .body(contenidoWebDTO);
     }
 
     /**
      * {@code PUT  /contenido-webs/:id} : Updates an existing contenidoWeb.
      *
-     * @param id the id of the contenidoWebDTO to save.
+     * @param id              the id of the contenidoWebDTO to save.
      * @param contenidoWebDTO the contenidoWebDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated contenidoWebDTO,
-     * or with status {@code 400 (Bad Request)} if the contenidoWebDTO is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the contenidoWebDTO couldn't be updated.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body
+     *         the updated contenidoWebDTO,
+     *         or with status {@code 400 (Bad Request)} if the contenidoWebDTO is
+     *         not valid,
+     *         or with status {@code 500 (Internal Server Error)} if the
+     *         contenidoWebDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<ContenidoWebDTO> updateContenidoWeb(
-        @PathVariable(value = "id", required = false) final Long id,
-        @Valid @RequestBody ContenidoWebDTO contenidoWebDTO
-    ) throws URISyntaxException {
+            @PathVariable(value = "id", required = false) final Long id,
+            @Valid @RequestBody ContenidoWebDTO contenidoWebDTO) throws URISyntaxException {
         LOG.debug("REST request to update ContenidoWeb : {}, {}", id, contenidoWebDTO);
         if (contenidoWebDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
@@ -96,26 +105,32 @@ public class ContenidoWebResource {
 
         contenidoWebDTO = contenidoWebService.update(contenidoWebDTO);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, contenidoWebDTO.getId().toString()))
-            .body(contenidoWebDTO);
+                .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME,
+                        contenidoWebDTO.getId().toString()))
+                .body(contenidoWebDTO);
     }
 
     /**
-     * {@code PATCH  /contenido-webs/:id} : Partial updates given fields of an existing contenidoWeb, field will ignore if it is null
+     * {@code PATCH  /contenido-webs/:id} : Partial updates given fields of an
+     * existing contenidoWeb, field will ignore if it is null
      *
-     * @param id the id of the contenidoWebDTO to save.
+     * @param id              the id of the contenidoWebDTO to save.
      * @param contenidoWebDTO the contenidoWebDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated contenidoWebDTO,
-     * or with status {@code 400 (Bad Request)} if the contenidoWebDTO is not valid,
-     * or with status {@code 404 (Not Found)} if the contenidoWebDTO is not found,
-     * or with status {@code 500 (Internal Server Error)} if the contenidoWebDTO couldn't be updated.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body
+     *         the updated contenidoWebDTO,
+     *         or with status {@code 400 (Bad Request)} if the contenidoWebDTO is
+     *         not valid,
+     *         or with status {@code 404 (Not Found)} if the contenidoWebDTO is not
+     *         found,
+     *         or with status {@code 500 (Internal Server Error)} if the
+     *         contenidoWebDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<ContenidoWebDTO> partialUpdateContenidoWeb(
-        @PathVariable(value = "id", required = false) final Long id,
-        @NotNull @RequestBody ContenidoWebDTO contenidoWebDTO
-    ) throws URISyntaxException {
+            @PathVariable(value = "id", required = false) final Long id,
+            @NotNull @RequestBody ContenidoWebDTO contenidoWebDTO) throws URISyntaxException {
         LOG.debug("REST request to partial update ContenidoWeb partially : {}, {}", id, contenidoWebDTO);
         if (contenidoWebDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
@@ -131,22 +146,26 @@ public class ContenidoWebResource {
         Optional<ContenidoWebDTO> result = contenidoWebService.partialUpdate(contenidoWebDTO);
 
         return ResponseUtil.wrapOrNotFound(
-            result,
-            HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, contenidoWebDTO.getId().toString())
-        );
+                result,
+                HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME,
+                        contenidoWebDTO.getId().toString()));
     }
 
     /**
      * {@code GET  /contenido-webs} : get all the contenidoWebs.
      *
      * @param pageable the pagination information.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of contenidoWebs in body.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list
+     *         of contenidoWebs in body.
      */
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping("")
-    public ResponseEntity<List<ContenidoWebDTO>> getAllContenidoWebs(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
+    public ResponseEntity<List<ContenidoWebDTO>> getAllContenidoWebs(
+            @org.springdoc.core.annotations.ParameterObject Pageable pageable) {
         LOG.debug("REST request to get a page of ContenidoWebs");
         Page<ContenidoWebDTO> page = contenidoWebService.findAll(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        HttpHeaders headers = PaginationUtil
+                .generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
@@ -154,8 +173,10 @@ public class ContenidoWebResource {
      * {@code GET  /contenido-webs/:id} : get the "id" contenidoWeb.
      *
      * @param id the id of the contenidoWebDTO to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the contenidoWebDTO, or with status {@code 404 (Not Found)}.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body
+     *         the contenidoWebDTO, or with status {@code 404 (Not Found)}.
      */
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<ContenidoWebDTO> getContenidoWeb(@PathVariable("id") Long id) {
         LOG.debug("REST request to get ContenidoWeb : {}", id);
@@ -169,12 +190,13 @@ public class ContenidoWebResource {
      * @param id the id of the contenidoWebDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteContenidoWeb(@PathVariable("id") Long id) {
         LOG.debug("REST request to delete ContenidoWeb : {}", id);
         contenidoWebService.delete(id);
         return ResponseEntity.noContent()
-            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
-            .build();
+                .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
+                .build();
     }
 }
