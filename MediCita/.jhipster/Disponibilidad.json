@@ -1,0 +1,44 @@
+{
+  "annotations": {
+    "changelogDate": "20260115163837"
+  },
+  "applications": "*",
+  "clientRootFolder": "MediCita",
+  "databaseType": "sql",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "dia",
+      "fieldType": "DiaSemana",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "LUNES,MARTES,MIERCOLES,JUEVES,VIERNES,SABADO,DOMINGO"
+    },
+    {
+      "fieldName": "horaInicio",
+      "fieldType": "LocalTime",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "horaFin",
+      "fieldType": "LocalTime",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "esDescanso",
+      "fieldType": "Boolean"
+    }
+  ],
+  "microserviceName": "MediCita",
+  "name": "Disponibilidad",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "medico",
+      "relationshipName": "medico",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

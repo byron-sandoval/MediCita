@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <property name="now" value="current_timestamp" dbms="postgresql"/>
+    <property name="floatType" value="float4" dbms="postgresql"/>
+    <property name="clobType" value="clob" dbms="postgresql"/>
+    <property name="blobType" value="blob" dbms="postgresql"/>
+    <property name="uuidType" value="uuid" dbms="postgresql"/>
+    <property name="datetimeType" value="datetime" dbms="postgresql"/>
+    <property name="timeType" value="time(6)" dbms="postgresql"/>
+
+    <include file="config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20260115163833_added_entity_Medico.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20260115163834_added_entity_Paciente.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20260115163835_added_entity_Cita.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20260115163836_added_entity_Pago.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20260115163837_added_entity_Disponibilidad.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20260115163838_added_entity_HistoriaClinica.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20260115163839_added_entity_Adjunto.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20260115163840_added_entity_ContenidoWeb.xml" relativeToChangelogFile="false"/>
+    <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
+    <include file="config/liquibase/changelog/20260115163833_added_entity_constraints_Medico.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20260115163834_added_entity_constraints_Paciente.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20260115163835_added_entity_constraints_Cita.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20260115163836_added_entity_constraints_Pago.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20260115163837_added_entity_constraints_Disponibilidad.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20260115163838_added_entity_constraints_HistoriaClinica.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20260115163839_added_entity_constraints_Adjunto.xml" relativeToChangelogFile="false"/>
+    <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
+    <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
+</databaseChangeLog>
