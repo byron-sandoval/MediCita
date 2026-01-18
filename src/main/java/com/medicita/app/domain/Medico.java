@@ -61,7 +61,7 @@ public class Medico implements Serializable {
     @Column(name = "activo", nullable = false)
     private Boolean activo;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonIgnoreProperties(value = { "cita", "historiaClinica" }, allowSetters = true)
     private Adjunto foto;
 

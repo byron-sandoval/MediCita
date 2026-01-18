@@ -47,6 +47,13 @@ public class HistoriaClinica implements Serializable {
     @JsonIgnoreProperties(value = { "foto" }, allowSetters = true)
     private Paciente paciente;
 
+    @PrePersist
+    public void prePersist() {
+        if (this.fechaCreacion == null) {
+            this.fechaCreacion = Instant.now();
+        }
+    }
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
     public Long getId() {

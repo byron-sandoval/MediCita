@@ -44,7 +44,7 @@ public class Adjunto implements Serializable {
     @JsonIgnoreProperties(value = { "medico", "paciente" }, allowSetters = true)
     private Cita cita;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonIgnoreProperties(value = { "paciente" }, allowSetters = true)
     private HistoriaClinica historiaClinica;
 
@@ -154,7 +154,15 @@ public class Adjunto implements Serializable {
         return this;
     }
 
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
+    @PrePersist
+    public void prePersist() {
+        if (this.fechaSubida == null) {
+            this.fechaSubida = Instant.now();
+        }
+    }
+
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and
+    // setters here
 
     @Override
     public boolean equals(Object o) {
@@ -169,7 +177,8 @@ public class Adjunto implements Serializable {
 
     @Override
     public int hashCode() {
-        // see https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
+        // see
+        // https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
         return getClass().hashCode();
     }
 
@@ -177,12 +186,12 @@ public class Adjunto implements Serializable {
     @Override
     public String toString() {
         return "Adjunto{" +
-            "id=" + getId() +
-            ", nombre='" + getNombre() + "'" +
-            ", contenido='" + getContenido() + "'" +
-            ", contenidoContentType='" + getContenidoContentType() + "'" +
-            ", tipoContenido='" + getTipoContenido() + "'" +
-            ", fechaSubida='" + getFechaSubida() + "'" +
-            "}";
+                "id=" + getId() +
+                ", nombre='" + getNombre() + "'" +
+                ", contenido='" + getContenido() + "'" +
+                ", contenidoContentType='" + getContenidoContentType() + "'" +
+                ", tipoContenido='" + getTipoContenido() + "'" +
+                ", fechaSubida='" + getFechaSubida() + "'" +
+                "}";
     }
 }
