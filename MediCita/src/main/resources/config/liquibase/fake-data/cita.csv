@@ -1,0 +1,11 @@
+id;fecha_hora;motivo;estado;enlace_telemedicina;costo;pagado;activo
+1;2026-01-15T13:05:51;cross;AUSENTE;rusty consequently frenetically;4395.34;false;true
+2;2026-01-15T00:57:28;quirkily;AUSENTE;inasmuch;29460.97;false;false
+3;2026-01-15T08:45:09;apud so bah;PENDIENTE;revere;30880.21;true;true
+4;2026-01-14T17:31:22;from elliptical popularity;CONFIRMADA;tiny;10550.18;false;true
+5;2026-01-14T19:32:06;gosh;COMPLETADA;airline boohoo psst;30438.25;false;true
+6;2026-01-15T12:42:23;though fast although;COMPLETADA;oh apricot;23551.91;false;true
+7;2026-01-15T16:06:07;given orange as;AUSENTE;fooey pish;24342.42;true;true
+8;2026-01-15T00:16:38;stable deadly highlight;CANCELADA;boo if;25584.83;true;true
+9;2026-01-15T07:11:29;adjourn even leap;COMPLETADA;less notwithstanding heating;21475.64;true;false
+10;2026-01-15T05:36:15;eventually eek;CONFIRMADA;boo congregate;713.81;true;false

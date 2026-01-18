@@ -1,0 +1,66 @@
+{
+  "annotations": {
+    "changelogDate": "20260115163833"
+  },
+  "applications": "*",
+  "clientRootFolder": "MediCita",
+  "databaseType": "sql",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "nombre",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "apellido",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "email",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "unique"]
+    },
+    {
+      "fieldName": "numeroLicencia",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "unique"]
+    },
+    {
+      "fieldName": "especialidad",
+      "fieldType": "Especialidad",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "CARDIOLOGIA,DERMATOLOGIA,PEDIATRIA,MEDICINA_GENERAL,NEUROLOGIA,PSIQUIATRIA,ODONTOLOGIA"
+    },
+    {
+      "fieldName": "tarifaConsulta",
+      "fieldType": "BigDecimal",
+      "fieldValidateRules": ["required", "min"],
+      "fieldValidateRulesMin": "0"
+    },
+    {
+      "fieldName": "keycloakId",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "unique"]
+    },
+    {
+      "fieldName": "activo",
+      "fieldType": "Boolean",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "microserviceName": "MediCita",
+  "name": "Medico",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "adjunto",
+      "relationshipName": "foto",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

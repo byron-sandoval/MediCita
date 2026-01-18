@@ -1,0 +1,49 @@
+{
+  "annotations": {
+    "changelogDate": "20260115163839"
+  },
+  "applications": "*",
+  "clientRootFolder": "MediCita",
+  "databaseType": "sql",
+  "documentation": "Entidad para subir imágenes (perfil, recetas, estudios)",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "nombre",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "contenido",
+      "fieldType": "ImageBlob",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "tipoContenido",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "fechaSubida",
+      "fieldType": "Instant"
+    }
+  ],
+  "microserviceName": "MediCita",
+  "name": "Adjunto",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "cita",
+      "relationshipName": "cita",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "historiaClinica",
+      "relationshipName": "historiaClinica",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}
